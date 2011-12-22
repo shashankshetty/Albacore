@@ -6,7 +6,7 @@ class MSBuild
   include Albacore::RunCommand
   include Configuration::MSBuild
   
-  attr_accessor :solution, :verbosity, :loggermodule
+  attr_accessor :solution, :verbosity, :loggermodule, :multicore
   attr_array :targets
   attr_hash :properties
   
@@ -28,7 +28,8 @@ class MSBuild
     command_parameters << "\"/logger:#{@loggermodule}\"" if @loggermodule != nil
     command_parameters << build_properties if @properties != nil
     command_parameters << "\"/target:#{build_targets}\"" if @targets != nil
-    
+    command_parameters << "/m" if @multicore != nil
+	
     result = run_command "MSBuild", command_parameters.join(" ")
     
     failure_message = 'MSBuild Failed. See Build Log For Detail'
