@@ -212,4 +212,19 @@ describe MSBuild, "when specifying a loggermodule" do
   end
 end
 
+describe MSBuild, "when specifying multicore compilation" do  
+  it_should_behave_like "prepping msbuild"
+  
+  before :all do
+    @msbuild.solution = @testdata.solution_path
+    @msbuild.multicore = true
+    @msbuild.execute
+  end
+
+  it "should use the maxcpucount switch" do
+    puts @msbuild.system_command
+    @msbuild.system_command.should include("/m")
+  end
+end
+
 
